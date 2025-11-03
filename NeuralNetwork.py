@@ -1,13 +1,15 @@
+from math import e, tanh
 from settings import *
-from math import e
 import json
 
 def sigmoid(x):
-    return 1 / (1 + e**-x)
+    return 0.5 * (1 + tanh(x / 2))
 
 def derivativeSigmoid(x):       # if doesn't work try storing layer outputs and activations seperately
-    return sigmoid(x) / (1 - sigmoid(x))
-
+    try:
+        return x / (1 - x)
+    except ZeroDivisionError:
+        return x / (1 - (x - 0.001))
 
 class NN:
     def __init__(self, bias: list, weights: list, learningRate: float):
@@ -36,7 +38,6 @@ class NN:
                 values.append(temp)
 
             self.layerOutput.append(values.copy())
-        print(f"layeroutput: {self.layerOutput}")
 
 
     def backprop(self, wantedOutputs: list):
@@ -55,7 +56,6 @@ class NN:
                     delta.append(derivativeSigmoid(self.layerOutput[l][i]) * temp)
             
             self.unitErrors.insert(0, delta.copy())
-        print(f"unit errors: {self.unitErrors}")
 
 
         weightchanges = []
@@ -83,7 +83,6 @@ class NN:
                 for j in range(len(self.weights[l][i])):
                     self.weights[l][i][j] += weightchanges[l][i][j]
         
-        print(f"weights: {self.weights}")
         
 
         biaschanges = []
@@ -97,8 +96,6 @@ class NN:
             for i in range(len(self.bias[l])):
                 self.bias[l][i] += biaschanges[l][i]
         
-        print(f"bias: {self.bias}")
-
 
     
 def main():
