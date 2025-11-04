@@ -1,15 +1,12 @@
-from math import e, tanh
+from math import e, tanh, log
 from settings import *
 import json
 
 def sigmoid(x):
     return 0.5 * (1 + tanh(x / 2))
 
-def derivativeSigmoid(x):       # if doesn't work try storing layer outputs and activations seperately
-    try:
-        return x / (1 - x)
-    except ZeroDivisionError:
-        return x / (1 - (x - 0.001))
+def derivativeSigmoid(x):
+    return x * (1 - x)
 
 class NN:
     def __init__(self, bias: list, weights: list, learningRate: float):
@@ -20,9 +17,11 @@ class NN:
         self.firstInputs = []
         self.unitErrors = []
         self.layers = len(self.bias)
+        self.Loss = -1
     
 
     def forwardPass(self, inputs: list):
+        self.layerOutput = []
         for l in range(self.layers):
             if l == 0:
                 self.firstInputs = inputs.copy()
@@ -41,6 +40,7 @@ class NN:
 
 
     def backprop(self, wantedOutputs: list):
+        self.unitErrors = []
         for l in range(self.layers-1, -1, -1):
             delta = []
             if l == self.layers-1:

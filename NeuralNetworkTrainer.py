@@ -23,11 +23,7 @@ def main():
     for epochs in range(100000):
         oneHotEncoding = []
         randidx = random.randint(0, len(inputs)-1)
-        for i in range(OUTPUTSIZE):
-            if i == outputs[randidx]:
-                oneHotEncoding.append(1)
-            else:
-                oneHotEncoding.append(0)
+        oneHotEncoding.append(outputs[randidx])
         
         passThroughNN(nn, inputs[randidx], oneHotEncoding)
         print(epochs)

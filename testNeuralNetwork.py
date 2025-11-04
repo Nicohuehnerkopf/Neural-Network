@@ -25,14 +25,11 @@ def main():
     for epochs in range(10000):
         oneHotEncoding = []
         randidx = random.randint(0, len(inputs)-1)
-        for i in range(OUTPUTSIZE):
-            if i == outputs[randidx]:
-                oneHotEncoding.append(1)
-            else:
-                oneHotEncoding.append(0)
+        oneHotEncoding.append(outputs[randidx])
         
         result = passThroughNN(nn, inputs[randidx], oneHotEncoding)
         result = [round(x) for x in result]
+        print(result)
 
         isCorrect = 0
         for i in range(len(result)):
