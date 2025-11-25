@@ -17,13 +17,14 @@ def main():
 
     nn = NN(bias, weights, LEARNING_RATE)
     
-    inputs = [[0, 0], [0, 1], [1, 0], [1, 1]]
+    # truth table for a xor gate
+    inputs = [[0, 0], [0, 1], [1, 0], [1, 1]]  
     outputs = [0, 1, 1, 0]
 
     for epochs in range(100000):
         oneHotEncoding = []
         randidx = random.randint(0, len(inputs)-1)
-        oneHotEncoding.append(outputs[randidx])
+        oneHotEncoding.append(outputs[randidx]) # works for Networks with one output neuron. For bigger models a for loop is needed
         
         passThroughNN(nn, inputs[randidx], oneHotEncoding)
         print(epochs)
